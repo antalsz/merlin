@@ -8,11 +8,11 @@ let ocaml_ver =
 ;;
 
 let ver =
-  Printf.eprintf "ocaml_ver = %s\n%!" ocaml_ver;
-  if ocaml_ver >= "411" then
-    "new"
-  else
-    "old"
+  (* if ocaml_ver >= "411" then
+   *   "new"
+   * else
+   *   "old" *)
+  "new"
 ;;
 
 Printf.ksprintf J.send {|
