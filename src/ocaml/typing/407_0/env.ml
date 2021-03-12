@@ -616,7 +616,7 @@ let check_consistency ps =
 
 (* Short paths basis *)
 
-let short_paths_basis = s_ref Short_paths.Basis.create
+let short_paths_basis = s_table Short_paths.Basis.create ()
 
 let short_paths_module_components_desc' = ref (fun _ -> assert false)
 
