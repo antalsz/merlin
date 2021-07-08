@@ -119,21 +119,21 @@
 (alias (name runtest) (deps (alias config-dot-merlin-reader-erroneous-config)))
 
 (alias
- (name config-dot-merlin-reader-quoting)
+ (name config-dot-merlin-reader-quoting-quoting)
  (package merlin)
- (deps (:t ./test-dirs/config/dot-merlin-reader/quoting.t)
-       (source_tree ./test-dirs/config/dot-merlin-reader)
+ (deps (:t ./test-dirs/config/dot-merlin-reader/quoting/quoting.t)
+       (source_tree ./test-dirs/config/dot-merlin-reader/quoting)
        %{bin:ocamlmerlin}
        %{bin:ocamlmerlin-server}
        %{bin:dot-merlin-reader})
  (action
-   (chdir ./test-dirs/config/dot-merlin-reader
+   (chdir ./test-dirs/config/dot-merlin-reader/quoting
      (setenv MERLIN %{exe:merlin-wrapper}
      (setenv OCAMLC %{ocamlc}
        (progn
          (run %{bin:mdx} test --syntax=cram %{t})
          (diff? %{t} %{t}.corrected)))))))
-(alias (name runtest) (deps (alias config-dot-merlin-reader-quoting)))
+(alias (name runtest) (deps (alias config-dot-merlin-reader-quoting-quoting)))
 
 (alias
  (name config-flags-invalid)
@@ -219,6 +219,23 @@
          (run %{bin:mdx} test --syntax=cram %{t})
          (diff? %{t} %{t}.corrected)))))))
 (alias (name runtest) (deps (alias config-symlinks.t-run)))
+
+(alias
+ (name config-workdir.t-run)
+ (package merlin)
+ (deps (:t ./test-dirs/config/workdir.t/run.t)
+       (source_tree ./test-dirs/config/workdir.t)
+       %{bin:ocamlmerlin}
+       %{bin:ocamlmerlin-server}
+       %{bin:dot-merlin-reader})
+ (action
+   (chdir ./test-dirs/config/workdir.t
+     (setenv MERLIN %{exe:merlin-wrapper}
+     (setenv OCAMLC %{ocamlc}
+       (progn
+         (run %{bin:mdx} test --syntax=cram %{t})
+         (diff? %{t} %{t}.corrected)))))))
+(alias (name runtest) (deps (alias config-workdir.t-run)))
 
 (alias
  (name deprecation-run)
@@ -338,6 +355,23 @@
          (run %{bin:mdx} test --syntax=cram %{t})
          (diff? %{t} %{t}.corrected)))))))
 (alias (name runtest) (deps (alias destruct-from_val)))
+
+(alias
+ (name destruct-issue1300_since_408)(enabled_if (>= %{ocaml_version} 4.08.0))
+ (package merlin)
+ (deps (:t ./test-dirs/destruct/issue1300_since_408.t)
+       (source_tree ./test-dirs/destruct)
+       %{bin:ocamlmerlin}
+       %{bin:ocamlmerlin-server}
+       %{bin:dot-merlin-reader})
+ (action
+   (chdir ./test-dirs/destruct
+     (setenv MERLIN %{exe:merlin-wrapper}
+     (setenv OCAMLC %{ocamlc}
+       (progn
+         (run %{bin:mdx} test --syntax=cram %{t})
+         (diff? %{t} %{t}.corrected)))))))
+(alias (name runtest) (deps (alias destruct-issue1300_since_408)))
 
 (alias
  (name destruct-issue596)
@@ -476,7 +510,7 @@
 (alias (name runtest) (deps (alias errors-typing-after-parsing-test)))
 
 (alias
- (name file-cache-test)
+ (name file-cache-test)(locks  ../server)
  (package merlin)
  (deps (:t ./test-dirs/file-cache/test.t)
        (source_tree ./test-dirs/file-cache)
@@ -1241,6 +1275,23 @@
 (alias (name runtest) (deps (alias short-paths-test_pre_410)))
 
 (alias
+ (name src-documentation.t-run)
+ (package merlin)
+ (deps (:t ./test-dirs/src-documentation.t/run.t)
+       (source_tree ./test-dirs/src-documentation.t)
+       %{bin:ocamlmerlin}
+       %{bin:ocamlmerlin-server}
+       %{bin:dot-merlin-reader})
+ (action
+   (chdir ./test-dirs/src-documentation.t
+     (setenv MERLIN %{exe:merlin-wrapper}
+     (setenv OCAMLC %{ocamlc}
+       (progn
+         (run %{bin:mdx} test --syntax=cram %{t})
+         (diff? %{t} %{t}.corrected)))))))
+(alias (name runtest) (deps (alias src-documentation.t-run)))
+
+(alias
  (name type-enclosing-constructors_and_paths-cons)
  (package merlin)
  (deps (:t ./test-dirs/type-enclosing/constructors_and_paths/cons.t)
@@ -1564,7 +1615,7 @@
 (alias (name runtest) (deps (alias type-expr-test)))
 
 (alias
- (name typer-cache-test)
+ (name typer-cache-test)(locks  ../server)
  (package merlin)
  (deps (:t ./test-dirs/typer-cache/test.t)
        (source_tree ./test-dirs/typer-cache)
@@ -1581,7 +1632,7 @@
 (alias (name runtest) (deps (alias typer-cache-test)))
 
 (alias
- (name warnings-backtrack)
+ (name warnings-backtrack)(locks  ../server)
  (package merlin)
  (deps (:t ./test-dirs/warnings/backtrack.t)
        (source_tree ./test-dirs/warnings)

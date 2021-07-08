@@ -3,9 +3,10 @@ maintainer:   "defree@gmail.com"
 authors:      "The Merlin team"
 homepage:     "https://github.com/ocaml/merlin"
 bug-reports:  "https://github.com/ocaml/merlin/issues"
-dev-repo: "git+https://github.com/ocaml/merlin.git"
+dev-repo:     "git+https://github.com/ocaml/merlin.git"
+license:      "MIT"
 build: [
-  ["dune" "subst"] {pinned}
+  ["dune" "subst"] {dev}
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" "merlin,dot-merlin-reader" "-j" "1"] {with-test & ocaml:version >= "4.03"}
 ]
@@ -32,7 +33,7 @@ post-messages: [
 Quick setup for VIM
 -------------------
 Append this to your .vimrc to add merlin to vim's runtime-path:
-  let g:opamshare = substitute(system('opam config var share'),'\\n$','','''')
+  let g:opamshare = substitute(system('opam var share'),'\\n$','','''')
   execute \"set rtp+=\" . g:opamshare . \"/merlin/vim\"
 
 Also run the following line in vim to index the documentation:
