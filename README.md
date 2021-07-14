@@ -91,12 +91,8 @@ All you need to do is add the following to your .emacs:
 (push "<SHARE_DIR>/emacs/site-lisp" load-path) ; directory containing merlin.el
 (setq merlin-command "<BIN_DIR>/ocamlmerlin")  ; needed only if ocamlmerlin not already in your PATH
 (autoload 'merlin-mode "merlin" "Merlin mode" t)
-(add-hook 'tuareg-mode-hook #'merlin-mode)
-(add-hook 'caml-mode-hook #'merlin-mode)
-;; Uncomment these lines if you want to enable integration with the corresponding packages
-;; (require 'merlin-iedit)       ; iedit.el editing of occurrences
-;; (require 'merlin-company)     ; company.el completion
-;; (require 'merlin-ac)          ; auto-complete.el completion
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'caml-mode-hook 'merlin-mode)
 ```
 
 A more comprehensive documentation can be found on the [emacs-from-scratch wiki](https://github.com/ocaml/merlin/wiki/emacs-from-scratch).
