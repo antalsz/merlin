@@ -1319,7 +1319,7 @@ strictly within, or nil if there is no such element."
     (when hole
       (let* ((start (merlin-lookup 'start hole))
              (typ (merlin-lookup 'type hole))
-             (hole-point (merlin-make-point start)))
+             (hole-point (merlin/make-point start)))
         (if (<= hole-point pmax)
           (progn
             (merlin--goto-point start)
@@ -1389,9 +1389,9 @@ strictly within, or nil if there is no such element."
       (if (= (length results) 1)
         (insert-choice 0 0 (car results))
         (with-output-to-temp-buffer "*Constructions*"
-          (progn 
+          (progn
             (with-current-buffer "*Constructions*"
-              (setq-local 
+              (setq-local
                 completion-list-insert-choice-function
                 #'insert-choice))
             (display-completion-list results)))))))
@@ -1399,9 +1399,9 @@ strictly within, or nil if there is no such element."
 (defun merlin--construct-point (point)
   "Execute a construct on POINT"
   (progn
-    (ignore point) ; Without this Emacs bytecode compiler complains about an    
+    (ignore point) ; Without this Emacs bytecode compiler complains about an
                    ; unused variable. This may be a bug in the compiler
-    (let ((result (merlin-call "construct"
+    (let ((result (merlin/call "construct"
                               "-position" (merlin-unmake-point (point)))))
       (when result
         (let* ((loc   (car result))
