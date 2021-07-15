@@ -1266,7 +1266,7 @@ strictly within, or nil if there is no such element."
 
 (defun merlin--holes ()
   "Query the list of holes (and their types)"
-  (merlin-call "holes"))
+  (merlin/call "holes"))
 
 (defun merlin--first-hole-aux (holes current-point comp)
   "Returns the first `hole` of the list such that
@@ -1275,7 +1275,7 @@ strictly within, or nil if there is no such element."
     (let* ((head (car holes))
            (tail (cdr holes))
            (start (merlin-lookup 'start head))
-           (hole-point (merlin-make-point start)))
+           (hole-point (merlin/make-point start)))
       (if (funcall comp hole-point current-point)
         head
         (merlin--first-hole-aux tail current-point comp)))))
@@ -1305,7 +1305,7 @@ strictly within, or nil if there is no such element."
     (when hole
       (let* ((start (merlin-lookup 'start hole))
              (typ (merlin-lookup 'type hole))
-             (hole-point (merlin-make-point start)))
+             (hole-point (merlin/make-point start)))
         (if (and
               (>= hole-point pmin)
               (<= hole-point pmax))
@@ -1319,7 +1319,7 @@ strictly within, or nil if there is no such element."
     (when hole
       (let* ((start (merlin-lookup 'start hole))
              (typ (merlin-lookup 'type hole))
-             (hole-point (merlin-make-point start)))
+             (hole-point (merlin/make-point start)))
         (if (<= hole-point pmax)
           (progn
             (merlin--goto-point start)
@@ -1401,7 +1401,7 @@ strictly within, or nil if there is no such element."
   (progn
     (ignore point) ; Without this Emacs bytecode compiler complains about an    
                    ; unused variable. This may be a bug in the compiler
-    (let ((result (merlin-call "construct"
+    (let ((result (merlin/call "construct"
                               "-position" (merlin-unmake-point (point)))))
       (when result
         (let* ((loc   (car result))
