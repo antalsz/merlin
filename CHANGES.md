@@ -2,6 +2,7 @@ git version
 ===========
 
   + merlin binary
+    - recover ill-typed patterns (#1317)
     - fix -cmt-path dirs mistakenly added to build path (#1330)
 
 merlin 3.5.0
