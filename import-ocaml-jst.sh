@@ -1,4 +1,48 @@
-#!/bin/bash 
+#!/bin/bash
+
+ocaml_jst=https://github.com/ocaml-flambda/ocaml-jst
+default_branch=main
+
+function usage () {
+  cat <<USAGE
+Usage: $0
+       $0 COMMITISH
+       $0 REPO COMMITISH
+
+Fetch the new compiler sources and patch Merlin to keep Merlin's local copies of
+things in sync.  By default, will pull the "main" branch from
+<$repository>, but the branch can be overridden
+by any commitish (branch, tag, commit, etc.) and the repository can be
+overridden by any URL.
+USAGE
+}
+
+repository="$ocaml_jst"
+commitish="$default_branch"
+case $# in
+  0)
+    # Accept defaults
+    ;;
+  1)
+    case "$1" in
+      -h|--help|-\?)
+        usage
+        exit 0
+        ;;
+      *)
+        commitish="$1"
+        ;;
+    esac
+    ;;
+  2)
+    repository="$1"
+    commitish="$2"
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac
 
 if ! git diff --quiet; then
     echo "Working directory must be clean before using this script,"
@@ -7,9 +51,8 @@ if ! git diff --quiet; then
     exit 1
 fi
 
-
 # First, fetch the new ocaml-jst sources and copy into upstream/ocaml_jst
-git fetch https://github.com/ocaml-flambda/ocaml-jst main
+git fetch "$repository" "$commitish"
 rev=$(git rev-parse FETCH_HEAD)
 cd upstream/ocaml_jst
 echo $rev > base-rev.txt
@@ -18,7 +61,7 @@ for file in $(git ls-tree --name-only -r HEAD . | grep -v base-rev.txt); do
 done
 git add -u .
 cd ../..
-git commit -m "Import ocaml_jst $(git describe --always $rev)"
+git commit -m "Import ocaml-jst $(git describe --always $rev)"
 
 # Then patch src/ocaml using the changes you just imported
 for file in $(git diff --name-only HEAD^ HEAD); do
