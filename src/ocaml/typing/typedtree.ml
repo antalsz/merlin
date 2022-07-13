@@ -160,7 +160,7 @@ and expression_desc =
   | Texp_probe_is_enabled of { name:string }
   | Texp_hole
 
-and ident_kind = Id_value | Id_prim of Types.alloc_mode
+and ident_kind = Id_value | Id_prim of Types.alloc_mode option
 
 and meth =
     Tmeth_name of string
@@ -372,7 +372,7 @@ and primitive_coercion =
   {
     pc_desc: Primitive.description;
     pc_type: type_expr;
-    pc_poly_mode: alloc_mode;
+    pc_poly_mode: alloc_mode option;
     pc_env: Env.t;
     pc_loc : Location.t;
   }
