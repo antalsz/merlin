@@ -8,17 +8,20 @@ function usage () {
 Usage: $0
        $0 COMMITISH
        $0 REPO COMMITISH
+       $0 REPO COMMITISH SUBDIRECTORY
 
 Fetch the new compiler sources and patch Merlin to keep Merlin's local copies of
 things in sync.  By default, will pull the "main" branch from
 <$repository>, but the branch can be overridden
 by any commitish (branch, tag, commit, etc.) and the repository can be
-overridden by any URL.
+overridden by any URL.  If SUBDIRECTORY is specified, then the relevant files are searched
+for in the given subdirectory of the repository.
 USAGE
 }
 
 repository="$ocaml_jst"
 commitish="$default_branch"
+subdirectory="."
 case $# in
   0)
     # Accept defaults
@@ -34,9 +37,10 @@ case $# in
         ;;
     esac
     ;;
-  2)
+  2|3)
     repository="$1"
     commitish="$2"
+    subdirectory="${3:-$subdirectory}"
     ;;
   *)
     usage >&2
@@ -56,8 +60,8 @@ git fetch "$repository" "$commitish"
 rev=$(git rev-parse FETCH_HEAD)
 cd upstream/ocaml_jst
 echo $rev > base-rev.txt
-for file in $(git ls-tree --name-only -r HEAD . | grep -v base-rev.txt); do
-  git show FETCH_HEAD:$file > $file;
+for file in $(git ls-tree --name-only -r HEAD | grep -v base-rev.txt); do
+  git show "FETCH_HEAD:$subdirectory/$file" > "$file";
 done
 git add -u .
 cd ../..
